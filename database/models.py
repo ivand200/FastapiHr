@@ -39,6 +39,9 @@ class AbstractUser(Base):
     client = relationship("Client", cascade="all, delete", back_populates="users")
     manager = relationship("Manager", back_populates="users")
 
+    def __str__(self) -> str:
+        return self.email
+
 
 class Client(Base):
     __tablename__ = "clients"
