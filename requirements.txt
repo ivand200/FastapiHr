@@ -3,6 +3,9 @@ uvicorn[standard]==0.15.0
 SQLAlchemy==1.4.34
 pydantic==1.9.0
 alembic==1.7.7
+PyJWT==2.4.0
+python-decouple==3.6
+bcrypt==3.2.2 
 
 
 black==22.3.0
