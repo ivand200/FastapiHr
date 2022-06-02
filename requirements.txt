@@ -6,3 +6,5 @@ alembic==1.7.7
 
 
 black==22.3.0
+pytest==7.1.2 
+flake8==4.0.1 
