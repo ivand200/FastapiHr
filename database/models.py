@@ -37,7 +37,7 @@ class AbstractUser(Base):
     password = Column(String(50))
 
     client = relationship("Client", cascade="all, delete", back_populates="users")
-    manager = relationship("Manager", back_populates="users")
+    manager = relationship("Manager", cascade="all, delete", back_populates="users")
 
     def __str__(self) -> str:
         return self.email
