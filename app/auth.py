@@ -1,3 +1,4 @@
+from pyexpat import model
 from fastapi import APIRouter, Depends, HTTPException, Security, Header
 from sqlalchemy.orm import Session
 from database import models, schemas
@@ -62,3 +63,47 @@ async def update_client(id: int, db: Session = Depends(get_db)):
     """
     Update existing client
     """
+
+
+@router_auth.post("/managers/signup/", response_model=schemas.User, status_code=201)
+async def create_manager(manager: schemas.UserCreate, db: Session = Depends(get_db)):
+    """
+    Create a manager
+    """
+    check_email = (
+        db.query(models.AbstractUser)
+        .filter(models.AbstractUser.email == manager.email)
+        .first()
+    )
+    check_username = (
+        db.query(models.AbstractUser)
+        .filter(models.AbstractUser.username == manager.username)
+        .first()
+    )
+    if check_email or check_username:
+        raise HTTPException(status_code=400, detail="Email or username already exists.")
+    hashed_password = bcrypt.hashpw(manager.password.encode("utf8"), bcrypt.gensalt())
+    db_manager = models.AbstractUser(
+        username=manager.username, email=manager.email, password=hashed_password
+    )
+    new_manager = models.Manager(users=db_manager)
+    db.add(db_manager)
+    db.add(new_manager)
+    db.commit()
+    db.refresh(db_manager)
+    return db_manager
+
+
+@router_auth.delete("/managers/{id}/", status_code=200)
+async def delete_manager(id: int, db: Session = Depends(get_db)):
+    """
+    Deelete manager by id
+    """
+    db_manager = (
+        db.query(models.AbstractUser).filter(models.AbstractUser.id == id).first()
+    )
+    if not db_manager:
+        raise HTTPException(status_code=400, detail="Manager does not exist.")
+    db.delete(db_manager)
+    db.commit()
+    return f"Manager {db_manager} was deleted."
