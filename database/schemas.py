@@ -4,6 +4,7 @@ from pydantic import BaseModel, validator, Field
 
 
 class User(BaseModel):
+    id: Optional[int]
     username: str
     email: str
 
