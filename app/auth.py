@@ -1,10 +1,3 @@
-# TODO: create client and delete client properly
-# TODO: with tests
-# TODO: checking existing clients
-# TODO: with all excetions (HTTP), status_code
-# TODO: hash password
-# TODO: check with blacke and flake8
-
 from fastapi import APIRouter, Depends, HTTPException, Security, Header
 from sqlalchemy.orm import Session
 from database import models, schemas
