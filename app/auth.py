@@ -11,6 +11,8 @@ from database import models, schemas
 from database.db import get_db
 from fastapi.responses import JSONResponse
 
+import bcrypt
+
 router_auth = APIRouter()
 
 
@@ -36,8 +38,9 @@ async def create_client(user: schemas.UserCreate, db: Session = Depends(get_db))
     )
     if check_email or check_username:
         raise HTTPException(status_code=400, detail="Email or username already exists.")
+    hashed_password = bcrypt.hashpw(user.password.encode("utf8"), bcrypt.gensalt())
     db_user = models.AbstractUser(
-        username=user.username, email=user.email, password=user.password
+        username=user.username, email=user.email, password=hashed_password
     )
     new_client = models.Client(users=db_user)
     db.add(db_user)
