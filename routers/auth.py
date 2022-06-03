@@ -4,6 +4,8 @@
 
 from fastapi import APIRouter, Depends, HTTPException, Security, Header, status
 from sqlalchemy.orm import Session
+from fastapi.encoders import jsonable_encoder
+
 from models import models_db
 from schemas import auth
 from db import get_db
@@ -54,19 +56,30 @@ async def delete_client(id: int, db: Session = Depends(get_db)):
     """
     Delete client by id
     """
-    db_user = db.query(models_db.AbstractUser).filter(models_db.AbstractUser.id == id).first()
-    if not db_user:
+    db_client = (
+        db.query(models_db.Client).filter(models_db.Client.user_id == id).first()
+    )
+    # db_user = db.query(models_db.AbstractUser).filter(models_db.AbstractUser.id == id).first()
+    if not db_client:
         raise HTTPException(status_code=400, detail="User does not exist.")
-    db.delete(db_user)
+    db.delete(db_client)
     db.commit()
-    return f"Client {db_user}, was deleted."
+    return f"Client {db_client}, was deleted."
 
 
-@router.put("/clients/{id}", response_model=auth.User, status_code=200)
-async def update_client(id: int, db: Session = Depends(get_db)):
+@router.put("/clients/{id}/", response_model=auth.User, status_code=200)  # response_model=auth.User,
+async def update_client(id: int, client: auth.User, db: Session = Depends(get_db)):
     """
     Update existing client
     """
+    update_client = db.query(models_db.Client).filter(models_db.Client.user_id == id).first()
+    if not update_client:
+        HTTPException(status_code=400, detail=f"Can not find client with id: {id}.")
+    update_client.users.username = client.username
+    update_client.users.email = client.email
+    db.commit()
+    db.refresh(update_client)
+    return update_client.users
 
 
 @router.post("/managers/signup/", response_model=auth.User, status_code=status.HTTP_201_CREATED)
@@ -104,7 +117,7 @@ async def delete_manager(id: int, db: Session = Depends(get_db)):
     Deelete manager by id
     """
     db_manager = (
-        db.query(models_db.AbstractUser).filter(models_db.AbstractUser.id == id).first()
+    db.query(models_db.Manager).filter(models_db.Manager.user_id == id).first()
     )
     if not db_manager:
         raise HTTPException(status_code=400, detail="Manager does not exist.")

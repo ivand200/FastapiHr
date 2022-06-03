@@ -18,6 +18,9 @@ class Field(Base):
     title = Column(String(20), unique=True)
     tag = relationship("Tag")
 
+    def __str__(self) -> str:
+        return self.title
+
 
 class Tag(Base):
     __tablename__ = "tags"
@@ -48,12 +51,18 @@ class Client(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     tags = relationship("Tag", secondary=association_table, back_populates="clients")
 
-    users = relationship("AbstractUser", back_populates="client")
+    users = relationship("AbstractUser", cascade="all, delete", back_populates="client")
+
+    def __str__(self) -> str:
+        return self.users.email
 
 
 class Manager(Base):
     __tablename__ = "managers"
     id = Column(Integer, primary_key=True, index=True)
-    users_id = Column(Integer, ForeignKey("users.id"))
+    user_id = Column(Integer, ForeignKey("users.id"))
 
-    users = relationship("AbstractUser", back_populates="manager")
+    users = relationship("AbstractUser", cascade="all, delete", back_populates="manager")
+
+    def __str__(self) -> str:
+        return self.users.email
