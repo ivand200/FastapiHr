@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from app.routers import app
+from main import app
 
 client = TestClient(app)
 
@@ -8,7 +8,7 @@ def test_create_delete_client():
     """
     Request to create client
     Request to create client with existing username and email
-    Request to delete client 
+    Request to delete client
     """
     payload = {
         "username": "client_test",
@@ -74,4 +74,3 @@ def test_create_delete_managers():
     response_bad_id_delete = client.delete(f"/auth/managers/99999/")
     assert response_bad_id_delete.status_code == 400
     assert response_bad_id_delete.text == '{"detail":"Manager does not exist."}'
-

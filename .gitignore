@@ -1,0 +1,8 @@
+# cache
+__pycache__
+.pytest_cache
+
+
+# Database
+test.db
+test.db.sqbpro

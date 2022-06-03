@@ -1,8 +1,7 @@
-from email.policy import default
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, Table
 from sqlalchemy.orm import relationship
 
-from .db import Base
+from db import Base
 
 
 association_table = Table(
@@ -58,23 +57,3 @@ class Manager(Base):
     users_id = Column(Integer, ForeignKey("users.id"))
 
     users = relationship("AbstractUser", back_populates="manager")
-
-
-
-
-
-# class Client(Base):
-#     __tablename__ = "clients"
-#     id = Column(Integer, primary_key=True, index=True)
-#     username = Column(String(50), unique=True)
-#     email = Column(String(50), unique=True)
-#     password = Column(String(50))
-#     # ManyToMany Tag
-# 
-# 
-# class Manager(Base):
-#     __tablename__ = "managers"
-#     id = Column(Integer, primary_key=True, index=True)
-#     username = Column(String(50), unique=True)
-#     email = Column(String(50), unique=True)
-#     password = Column(String)
