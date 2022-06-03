@@ -19,7 +19,7 @@ async def auth_users():
     return "Hello"
 
 
-@router.post("/clients/", response_model=auth.User, status_code=201)
+@router.post("/clients/", response_model=auth.User, status_code=status.HTTP_201_CREATED)
 async def create_client(user: auth.UserCreate, db: Session = Depends(get_db)):
     """
     Create a client
@@ -49,7 +49,7 @@ async def create_client(user: auth.UserCreate, db: Session = Depends(get_db)):
     return db_user
 
 
-@router.delete("/clients/{id}/", status_code=200)
+@router.delete("/clients/{id}/", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_client(id: int, db: Session = Depends(get_db)):
     """
     Delete client by id
@@ -69,7 +69,7 @@ async def update_client(id: int, db: Session = Depends(get_db)):
     """
 
 
-@router.post("/managers/signup/", response_model=auth.User, status_code=201)
+@router.post("/managers/signup/", response_model=auth.User, status_code=status.HTTP_201_CREATED)
 async def create_manager(manager: auth.UserCreate, db: Session = Depends(get_db)):
     """
     Create a manager
@@ -98,7 +98,7 @@ async def create_manager(manager: auth.UserCreate, db: Session = Depends(get_db)
     return db_manager
 
 
-@router.delete("/managers/{id}/", status_code=200)
+@router.delete("/managers/{id}/", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_manager(id: int, db: Session = Depends(get_db)):
     """
     Deelete manager by id

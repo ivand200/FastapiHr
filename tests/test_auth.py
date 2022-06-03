@@ -31,7 +31,7 @@ def test_create_delete_client():
     response_delete = client.delete(f"/auth/clients/{id}/")
     response_delete_body = response_delete.text
 
-    assert response_delete.status_code == 200
+    assert response_delete.status_code == 204
     assert response_delete_body == '"Client client@pytest.com, was deleted."'
 
     response_bad_id_delete = client.delete(f"/auth/clients/99999/")
@@ -68,7 +68,7 @@ def test_create_delete_managers():
     response_delete = client.delete(f"/auth/managers/{id}/")
     response_delete_body = response_delete.text
 
-    assert response_delete.status_code == 200
+    assert response_delete.status_code == 204
     assert response_delete_body == '"Manager manager@pytest.com was deleted."'
 
     response_bad_id_delete = client.delete(f"/auth/managers/99999/")
