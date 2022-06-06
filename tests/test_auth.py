@@ -13,7 +13,7 @@ def test_create_delete_client():
     payload = {
         "username": "client_test",
         "email": "client@pytest.com",
-        "password": "test_pass"
+        "password": "test_passA88"
     }
     response_new_create = client.post("/auth/clients/", json=payload)
     response_create_new_body = response_new_create.json()
@@ -50,7 +50,7 @@ def test_create_delete_managers():
     payload = {
         "username": "manager_test",
         "email": "manager@pytest.com",
-        "password": "test_pass"
+        "password": "test_passA99"
     }
     response_new_create = client.post("/auth/managers/signup/", json=payload)
     response_create_new_body = response_new_create.json()
