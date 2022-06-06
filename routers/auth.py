@@ -69,7 +69,7 @@ async def delete_client(id: int, db: Session = Depends(get_db)):
     return f"Client {db_client}, was deleted."
 
 
-@router.put("/clients/{id}/", response_model=auth.User, status_code=200)
+@router.put("/clients/{id}/", response_model=auth.User, status_code=status.HTTP_200_OK)
 async def update_client(id: int, client: auth.User, db: Session = Depends(get_db)):
     """
     Update existing client
