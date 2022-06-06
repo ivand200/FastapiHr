@@ -49,7 +49,7 @@ async def delete_field(id: int, db: Session = Depends(get_db)):
     return f"field {check_field} was deleted"
 
 
-@router.get("/fields/{id}", response_model=tags.FieldTags, status_code=status.HTTP_200_OK)  # response_model=clients.FieldTags
+@router.get("/fields/{id}", response_model=tags.FieldTags, status_code=status.HTTP_200_OK)
 async def get_field_by_id(id: int, db: Session = Depends(get_db)):
     """
     Get field by id with all tags
