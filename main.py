@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 
 from routers.auth import router as router_auth
+from routers.tags import router as router_tags
 from routers.clients import router as router_clients
+
 from db import Base, engine
 from models import models_db
 
@@ -14,6 +16,12 @@ app.include_router(
     router_auth,
     prefix="/auth",
     tags=["auth"]
+)
+
+app.include_router(
+    router_tags,
+    prefix="/tags",
+    tags=["tags"]
 )
 
 app.include_router(
