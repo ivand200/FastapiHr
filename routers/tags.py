@@ -27,7 +27,9 @@ async def create_field(field: tags.FieldCreate, db: Session = Depends(get_db)):
     """
     Create Field
     """
-    field_db = db.query(models_db.Field).filter(models_db.Field.title == field.title).first()
+    field_db = (
+        db.query(models_db.Field).filter(models_db.Field.title == field.title).first()
+    )
     if field_db:
         raise HTTPException(status_code=400, detail="Field title already exists.")
     new_field = models_db.Field(title=field.title)
@@ -65,7 +67,9 @@ async def get_field_by_id(id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/fields/{id}",  response_model=tags.FieldBase, status_code=status.HTTP_200_OK)
-async def update_field(id: int, field: tags.FieldCreate, db: Session = Depends(get_db)):
+async def update_field(
+    id: int, field: tags.FieldCreate, db: Session = Depends(get_db)
+):
     """
     Update existing field
     """
@@ -95,7 +99,9 @@ async def create_tags(tag: tags.TagCreate, db: Session = Depends(get_db)):
     """
     new_tag = db.query(models_db.Tag).filter(models_db.Tag.title == tag.title).first()
     if new_tag:
-        raise HTTPException(status_code=400, detail="Tag with this title already exists.")
+        raise HTTPException(
+            status_code=400, detail="Tag with this title already exists."
+        )
     new_tag = models_db.Tag(title=tag.title, field_id=tag.field_id)
     db.add(new_tag)
     db.commit()

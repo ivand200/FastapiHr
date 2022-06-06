@@ -37,7 +37,9 @@ async def create_client(user: auth.UserCreate, db: Session = Depends(get_db)):
         .first()
     )
     if check_email or check_username:
-        raise HTTPException(status_code=400, detail="Email or username already exists.")
+        raise HTTPException(
+            status_code=400, detail="Email or username already exists."
+        )
     hashed_password = bcrypt.hashpw(user.password.encode("utf8"), bcrypt.gensalt())
     db_user = models_db.AbstractUser(
         username=user.username, email=user.email, password=hashed_password
@@ -67,12 +69,14 @@ async def delete_client(id: int, db: Session = Depends(get_db)):
     return f"Client {db_client}, was deleted."
 
 
-@router.put("/clients/{id}/", response_model=auth.User, status_code=200)  # response_model=auth.User,
+@router.put("/clients/{id}/", response_model=auth.User, status_code=200)
 async def update_client(id: int, client: auth.User, db: Session = Depends(get_db)):
     """
     Update existing client
     """
-    update_client = db.query(models_db.Client).filter(models_db.Client.user_id == id).first()
+    update_client = (
+        db.query(models_db.Client).filter(models_db.Client.user_id == id).first()
+    )
     if not update_client:
         HTTPException(status_code=400, detail=f"Can not find client with id: {id}.")
     update_client.users.username = client.username
