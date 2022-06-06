@@ -30,6 +30,9 @@ class Tag(Base):
     clients = relationship("Client", secondary=association_table, back_populates="tags")
     field_id = Column(Integer, ForeignKey("fields.id"))
 
+    def __str__(self) -> str:
+        return self.title
+
 
 class AbstractUser(Base):
     __tablename__ = "users"
