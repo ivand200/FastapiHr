@@ -10,9 +10,6 @@ from db import get_db
 router = APIRouter()
 
 
-# We got Field, Tag, Client
-# TODO: create/delete/get Field
-# TODO: write all tests
 @router.get("/fields", response_model=List[tags.FieldBase], status_code=status.HTTP_200_OK)
 async def get_all_fields(db: Session = Depends(get_db)):
     """
